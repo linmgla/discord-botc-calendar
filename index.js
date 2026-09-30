@@ -59,6 +59,7 @@ client.on('messageCreate', async (message) => {
         threadName: message.channel.name, // 討論串名稱 (例如: 9/30(三)22:00 暗流湧動)
         content: content,                 // 訊息全文內容
         author: message.author.username
+        messageUrl: message.url
       };
 
       // 發送請求給 Google Apps Script
