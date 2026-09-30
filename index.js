@@ -1,7 +1,16 @@
 const { Client, GatewayIntentBits } = require('discord.js');
 const axios = require('axios');
+const http = require('http');
 
-// 初始化 Discord Bot
+// 建置簡易 HTTP Server 滿足 Render 的 Port 監聽檢查
+const PORT = process.env.PORT || 3000;
+http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('Discord Bot is running!\n');
+}).listen(PORT, () => {
+  console.log(`🌐 Web server is listening on port ${PORT}`);
+});
+
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -10,41 +19,34 @@ const client = new Client({
   ]
 });
 
-// 讀取 Render 環境變數
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 const GAS_URL = process.env.GAS_URL;
 
 client.once('ready', () => {
-  console.log(`Bot 已經成功登入：${client.user.tag}`);
+  console.log(`✅ Bot 成功登入為：${client.user.tag}`);
 });
 
-// 監聽新訊息（包含討論串內的新訊息）
 client.on('messageCreate', async (message) => {
-  // 忽略機器人自身的訊息
   if (message.author.bot) return;
 
-  // 檢查訊息是否來自討論串 (Thread)
   if (message.channel.isThread()) {
     const text = message.content;
 
-    // 檢查是否包含「劇本」關鍵字
-    if (text.includes('劇本')) {
-      console.log(`收到開團訊息：${message.channel.name}`);
+    if (text.includes('劇本') || text.includes('剧本')) {
+      console.log(`📩 收到開團訊息，討論串名稱：${message.channel.name}`);
 
       const payload = {
-        threadName: message.channel.name, // 取得討論串標題 (例如: 10/3(六) 勇者鬥惡龍)
-        content: text,                    // 訊息全文
+        threadName: message.channel.name,
+        content: text,
         author: message.author.username
       };
 
       try {
         const response = await axios.post(GAS_URL, payload);
-        console.log('GAS 回應：', response.data);
-        
-        // 成功後給訊息打勾 📅 表情符號
+        console.log('🌐 GAS 回應：', response.data);
         await message.react('📅');
       } catch (error) {
-        console.error('傳送給 GAS 失敗：', error.message);
+        console.error('❌ 傳送至 GAS 失敗：', error.message);
       }
     }
   }
