@@ -54,11 +54,11 @@ client.on('messageCreate', async (message) => {
       // 貼上 📅 處理中表情符號
       await message.react('📅');
 
-      // 整理發送給 GAS 的資料包
+      // 整理發送給 GAS 的資料包（修正了語法逗號錯誤）
       const payload = {
-        threadName: message.channel.name, // 討論串名稱 (例如: 9/30(三)22:00 暗流湧動)
-        content: content,                 // 訊息全文內容
-        author: message.author.username
+        threadName: message.channel.name,
+        content: content,
+        author: message.author.username, // 👈 補上了逗號
         messageUrl: message.url
       };
 
