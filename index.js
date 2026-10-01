@@ -45,20 +45,16 @@ client.on('messageCreate', async (message) => {
 
   const content = message.content;
   
-  // 判斷是否包含關鍵字（劇本/說書/ST/DM 等）
-  const hasScript = /(?:劇本|剧本)/i.test(content);
-  const hasHost = /(?:說書人|說書|说书人|说书|ST|DM|主持)/i.test(content);
+  // 嚴格判斷：必須包含「說書：」、「說書:」、「說書人：」或「說書人:」（包含繁簡體）
+  const hasExplicitHost = /(?:說書人|說書|说书人|说书)\s*[:：]/i.test(content);
 
-  if (hasScript || hasHost) {
+  if (hasExplicitHost) {
     try {
-      // 貼上 📅 處理中表情符號
-      await message.react('📅');
-
-      // 整理發送給 GAS 的資料包（修正了語法逗號錯誤）
+      // 整理發送給 GAS 的資料包
       const payload = {
         threadName: message.channel.name,
         content: content,
-        author: message.author.username, // 👈 補上了逗號
+        author: message.author.username,
         messageUrl: message.url
       };
 
