@@ -1,3 +1,4 @@
 # 101鐘樓開團行程
 https://discord.gg/ScjWmBwXSg 歡迎來玩BOTC血染鐘樓
+
 Google日曆連結 https://calendar.google.com/calendar/u/0?cid=OWFjYTdhMjNiNGJmZWVmY2EzMjAxNmEzYmVkZmZjYTUwZTY3YTM5OWE5ZGNlZjAxZjVjNTM5NGVmZTY1MTVhMEBncm91cC5jYWxlbmRhci5nb29nbGUuY29t
